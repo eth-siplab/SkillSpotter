@@ -4,7 +4,7 @@
 
 [Björn Braun](https://bjoernbraun.com) &nbsp;·&nbsp; [Christian Holz](https://siplab.org)
 
-Sensing, Interaction & Perception Lab, Department of Computer Science, ETH Zürich
+[Sensing, Interaction & Perception Lab](https://siplab.org), Department of Computer Science, ETH Zürich
 
 [![Project Page](https://img.shields.io/badge/Project-Page-1f72b1)](https://siplab.org/projects/SkillSpotter)
 [![Paper](https://img.shields.io/badge/Paper-ECCV%202026-b31b1b)](https://siplab.org/projects/SkillSpotter)
@@ -150,13 +150,43 @@ accuracy (BA), and macro-F1, averaged over matching radii {0.25, 0.5, 1.0}s. Rem
 
 ## Results
 
-Timestamp-level skill assessment on Ego-Exo4D demonstration proficiency (mAP_S / BA):
+Timestamp-level skill assessment on Ego-Exo4D demonstration proficiency. We report
+class-specific mAP (mAP<sub>S</sub>), class-agnostic mAP (mAP<sub>A</sub>), balanced accuracy (BA),
+and macro-F1 across the three view settings, averaged over matching radii {0.25, 0.5, 1.0}s.
 
-| View setting | mAP_S | Balanced Acc. |
-|--------------|:-----:|:-------------:|
-| Ego          | 21.82 | 60.40 |
-| Exos         | 21.12 | 60.59 |
-| Ego + Exos   | 21.34 | 60.39 |
+<table>
+<thead>
+<tr>
+<th rowspan="2" align="left">Model</th>
+<th colspan="4">Ego</th>
+<th colspan="4">Exos</th>
+<th colspan="4">Ego + Exos</th>
+</tr>
+<tr>
+<th>mAP<sub>S</sub></th><th>mAP<sub>A</sub></th><th>BA</th><th>F1</th>
+<th>mAP<sub>S</sub></th><th>mAP<sub>A</sub></th><th>BA</th><th>F1</th>
+<th>mAP<sub>S</sub></th><th>mAP<sub>A</sub></th><th>BA</th><th>F1</th>
+</tr>
+</thead>
+<tbody>
+<tr><td align="left">Random</td><td>0.73</td><td>1.49</td><td>50.90</td><td>50.03</td><td>0.70</td><td>1.47</td><td>50.44</td><td>49.59</td><td>0.70</td><td>1.46</td><td>50.15</td><td>49.39</td></tr>
+<tr><td align="left">Uniform tips</td><td>0.71</td><td>1.49</td><td>50.00</td><td>27.15</td><td>0.71</td><td>1.47</td><td>50.00</td><td>27.15</td><td>0.72</td><td>1.46</td><td>50.00</td><td>27.15</td></tr>
+<tr><td align="left">Uniform good</td><td>0.70</td><td>1.52</td><td>50.00</td><td>38.55</td><td>0.68</td><td>1.47</td><td>50.00</td><td>38.55</td><td>0.67</td><td>1.46</td><td>50.00</td><td>38.55</td></tr>
+<tr><td align="left">Baseline<sup>†</sup></td><td>3.27</td><td>–</td><td>–</td><td>–</td><td>3.84</td><td>–</td><td>–</td><td>–</td><td>3.57</td><td>–</td><td>–</td><td>–</td></tr>
+<tr><td align="left">VideoMambaSuite</td><td>7.63</td><td>8.65</td><td>49.51</td><td>49.35</td><td>7.06</td><td>8.17</td><td>46.03</td><td>43.88</td><td>3.69</td><td>3.91</td><td>52.70</td><td>51.96</td></tr>
+<tr><td align="left">TadTR</td><td>7.79</td><td>10.79</td><td>49.68</td><td>33.62</td><td>6.37</td><td>10.48</td><td>52.31</td><td>34.63</td><td>4.12</td><td>6.74</td><td>52.81</td><td>48.23</td></tr>
+<tr><td align="left">DyFADet</td><td>10.09</td><td>12.53</td><td>48.89</td><td>46.75</td><td>3.57</td><td>4.48</td><td>49.52</td><td>47.72</td><td>3.18</td><td>5.64</td><td>47.63</td><td>35.45</td></tr>
+<tr><td align="left">TriDet</td><td>10.35</td><td>14.79</td><td>49.17</td><td>40.10</td><td>8.99</td><td>12.16</td><td>50.06</td><td>36.78</td><td>8.23</td><td>11.78</td><td>48.92</td><td>48.77</td></tr>
+<tr><td align="left">CausalTAD</td><td>11.42</td><td>16.07</td><td>52.86</td><td>52.07</td><td>11.82</td><td>14.05</td><td>50.78</td><td>50.41</td><td>13.16</td><td>17.21</td><td>54.98</td><td>54.95</td></tr>
+<tr><td align="left">TemporalMaxer</td><td>12.34</td><td>16.69</td><td>54.34</td><td>53.90</td><td>10.38</td><td>15.17</td><td>52.18</td><td>52.16</td><td>11.27</td><td>15.75</td><td>50.09</td><td>49.58</td></tr>
+<tr><td align="left">ActionFormer</td><td>12.40</td><td>17.11</td><td>55.99</td><td>55.91</td><td>13.18</td><td>18.25</td><td>55.03</td><td>55.03</td><td>13.82</td><td>17.85</td><td>50.34</td><td>50.17</td></tr>
+<tr><td align="left"><b>SkillSpotter</b><sup>*</sup></td><td><b>21.82</b></td><td><b>27.89</b></td><td><b>60.40</b></td><td><b>60.02</b></td><td><b>21.12</b></td><td><b>27.47</b></td><td><b>60.59</b></td><td><b>60.55</b></td><td><b>21.34</b></td><td><b>28.01</b></td><td><b>60.39</b></td><td><b>59.37</b></td></tr>
+<tr><td align="left">Δ best baseline</td><td>+9.42</td><td>+10.78</td><td>+4.41</td><td>+4.11</td><td>+7.94</td><td>+9.22</td><td>+5.56</td><td>+5.52</td><td>+7.52</td><td>+10.16</td><td>+5.41</td><td>+4.42</td></tr>
+</tbody>
+</table>
+
+<sup>†</sup> Original Ego-Exo4D benchmark result, for which only mAP<sub>S</sub> was reported. &nbsp;
+<sup>*</sup> Uses cross-view attention for Ego+Exos. All re-implemented baselines use Soft-NMS.
 
 ## Repository Structure
 
