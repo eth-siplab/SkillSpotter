@@ -1,0 +1,182 @@
+# SkillSpotter for EgoExo4D proficiency-demonstration timestamping.
+#
+# ConvTransformer (ActionFormer) backbone with three toggleable modules:
+#   1. Adaptive temporal suppression  -> model.learnable_suppression: True/False
+#   2. Gated 3D body-pose fusion       -> model.use_pose: True/False
+#   3. Bidirectional cross-view attn   -> dataset.cross_view: True/False
+
+dataset_name: "egoexo4d_omnivore_pose"  # egoexo4d_omnivore_pose
+model_name: "skillspotter"
+train_split: ['training']
+val_split: ['validation']
+test_split: ['testing']
+devices: ['cuda:1']
+extension: ""  #
+output_folder: './outputs/egoexo4d'
+
+dataset: {
+  json_file: '/path/to/EgoExo4D/annotations/egoexo4d.json',
+  feat_folder: '/path/to/EgoExo4D/features/omnivore_features',
+  egoexo_type: 'exo',  # ego, exo, both
+  concat_views: True,  # set to True to replicate exo results
+  concat_norm: "none",
+  cross_view: False,              # Toggle: False to disable cross-view attention, True to replicate Ego+Exos results
+  file_prefix: ~,
+  file_ext: .npy,
+  num_classes: 2,
+  input_dim: 1536,
+  feat_stride: 16,
+  num_frames: 32,
+  default_fps: 30,
+  trunc_thresh: 0.3,
+  crop_ratio: [0.9, 1.0],
+  max_seq_len: 1024,
+  downsample_rate: 1,
+  force_upsampling: False,
+  # Pose
+  # IMPORTANT: TRAIN WITH GT POSE AND TEST WITH PREDICTED POSE!
+  pose_root: '/path/to/EgoExo4D/predicted_or_gt_ego_pose',
+  pose_type: 'body',
+  pose_max_frame_dist: 8,
+  pose_require_file: False,
+  pose_normalize: True,
+  pose_use_kinematics: True,
+  log_pose_coverage: False,
+}
+
+model: {
+  backbone_type: convTransformer,
+  backbone_arch: [2, 2, 7],
+  scale_factor: 2,
+  input_dim: 1536,
+  max_seq_len: 1024,
+  max_buffer_len_factor: 4.0,
+
+  # embedding
+  embd_kernel_size: 3,
+  embd_dim: 512,
+  embd_with_ln: True,
+
+  # position encoding
+  use_abs_pe: True,
+  use_rel_pe: False,
+
+  # attention
+  n_head: 4,
+  n_mha_win_size: 9,
+
+  # FPN
+  fpn_type: identity,
+  fpn_dim: 512,
+  fpn_with_ln: True,
+  fpn_start_level: 0,
+
+  # detection head
+  head_dim: 512,
+  head_kernel_size: 3,
+  head_num_layers: 3,
+  head_with_ln: True,
+  regression_range: [
+    [0, 4], [2, 8], [4, 16], [8, 32],
+    [16, 64], [32, 128], [64, 256], [128, 10000]
+  ],
+  num_classes: 2,
+
+  # Cross-view attention parameters
+  cross_view_n_head: 4,
+  cross_view_attn_pdrop: 0.1,
+  cross_view_proj_pdrop: 0.1,
+  cross_view_gate_init: -2.0,
+  cross_view_fusion_dropout: 0.1,
+  cross_view_fusion_gate_init: -1.0,
+  cross_view_shared_backbone: True,
+
+  # Pose stream parameters
+  use_pose: True,
+  pose_input_dim: 118,
+  pose_backbone_type: conv,
+  pose_embd_dim: 256,
+  pose_embd_with_ln: True,
+  pose_neck_type: fpn,
+  pose_gate_init: -2.0,
+  pose_fusion_dropout: 0.1,
+
+  # Adaptive suppression
+  learnable_suppression: True,
+}
+
+opt: {
+  type: "AdamW",
+  learning_rate: 0.001,
+  epochs: 10,
+  enable_early_stopping: False,
+  patience: 4,
+  weight_decay: 0.05,
+  accumulation_steps: 1,
+  warmup: True,
+  warmup_epochs: 5,
+  schedule_type: "cosine",
+}
+
+loader: {
+  batch_size: 8,
+  persistent_workers: True
+}
+
+evaluator: {
+  radius_thresholds: [0.25, 0.5, 1.0],
+  top_k_recall: [1],
+  top_k_eval: 100,
+  num_workers: 8,
+}
+
+train_cfg: {
+  "center_sample": "radius",
+  "center_sample_radius": 1.5,
+  "loss_weight": 1.0,
+  "cls_prior_prob": 0.01,
+  "init_loss_norm": 100,
+  "clip_grad_l2norm": 1.0,
+  "head_empty_cls": [ ],
+  "dropout": 0.1,
+  "droppath": 0.1,
+  "label_smoothing": 0.0,
+  "timestamp_loss": "softargmax_l1",
+  "timestamp_sigma": 6.0,
+  "timestamp_pos_radius": 3,
+  use_ema: True,
+  # Suppression training params
+  "num_scenarios": 8,
+  "suppress_loss_weight": 1.0,
+  "suppress_target_sigma": 1.0,
+  "suppress_topk_train": 512,
+  "suppress_hidden_dim": 128,
+  "suppress_class_aware": True,
+}
+
+test_cfg: {
+  "pre_nms_thresh": 0.001,
+  "pre_nms_topk": 5000,
+  "min_score": 0.001,
+  "max_t_num": 5000,
+  "nms_method": "none",
+  "multiclass_nms": True,
+  "ext_score_file": Null,
+  "iou_threshold": 0.1,
+  "duration_thresh": 0.05,
+  "nms_sigma": 0.5,
+  "voting_thresh": 0.95,
+  "l1_nms_radius": 0,
+  "l1_nms_unit": "seconds",
+  use_ema: True,
+  # Ablation flags (inference-only)
+  ablate_crossview_attn: False,
+  ablate_crossview_fusion: False,
+  ablate_pose_gates: False,
+  # Adaptive suppression at test
+  "suppress_topk_test": 2048,
+  "suppress_class_aware": True,
+  debug_suppress_dump: False,
+  debug_suppress_dump_file: ~,
+  debug_suppress_dump_topk: 5000,
+}

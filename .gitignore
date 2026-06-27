@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Compiled NMS extension
+nms_1d_cpu*.so
+libs/utils/build/
+
+# IDE / OS / tooling
+.idea/
+.vscode/
+.DS_Store
+.claude/
+
+# Experiment outputs
+*.pth.tar
+*.pkl
+logs/
+runs/
+outputs/
+PreTrainedModels/

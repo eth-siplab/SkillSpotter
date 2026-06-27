@@ -1,0 +1,26 @@
+# --- Core (training + evaluation on pre-extracted Omnivore features) ---
+torch>=2.0
+numpy
+pandas
+pyyaml
+tqdm
+joblib
+tensorboard
+
+# --- Optional: 3D body-pose prediction (tools/predict_*_pose.py) ---
+# transformers>=4.48.0   # ViTPose (exo 2D keypoints)
+# ultralytics>=8.0       # YOLO person detection (exo)
+# opencv-python          # frame I/O for exo pose
+# scipy                  # RANSAC-DLT triangulation (exo)
+# gdown                  # download ego-pose baseline checkpoint
+# pillow
+
+# --- Optional: raw-video clip extraction (eval.py --save_clips) ---
+# decord
+# av
+# torchvision
+
+# --- Optional: text-generation evaluation (not used by SkillSpotter) ---
+# nltk
+# rouge-score
+# bert-score
