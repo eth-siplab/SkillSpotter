@@ -8,6 +8,7 @@
 
 [![Project Page](https://img.shields.io/badge/Project-Page-1f72b1)](https://siplab.org/projects/SkillSpotter)
 [![Paper](https://img.shields.io/badge/Paper-ECCV%202026-b31b1b)](https://siplab.org/projects/SkillSpotter)
+[![arXiv](https://img.shields.io/badge/arXiv-2606.31127-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.31127)
 
 </div>
 
@@ -208,11 +209,11 @@ eval.py     evaluation entry point
 If you find this work useful, please cite:
 
 ```bibtex
-@inproceedings{braun2026skillspotter,
-  title     = {SkillSpotter: Pose-Aware Multi-View Skilled Action Detection and Grading in Ego-Exo Videos},
-  author    = {Braun, Bj{\"o}rn and Holz, Christian},
-  booktitle = {European Conference on Computer Vision (ECCV)},
-  year      = {2026}
+@article{braun2026skillspotter,
+  title   = {SkillSpotter: Pose-Aware Multi-View Skilled Action Detection and Grading in Ego-Exo Videos},
+  author  = {Braun, Bj{\"o}rn and Holz, Christian},
+  journal = {arXiv preprint arXiv:2606.31127},
+  year    = {2026}
 }
 ```
 
