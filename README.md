@@ -7,7 +7,7 @@
 [Sensing, Interaction & Perception Lab](https://siplab.org), Department of Computer Science, ETH Zürich
 
 [![Project Page](https://img.shields.io/badge/Project-Page-1f72b1)](https://siplab.org/projects/SkillSpotter)
-[![Paper](https://img.shields.io/badge/Paper-ECCV%202026-b31b1b)](https://siplab.org/projects/SkillSpotter)
+[![Paper](https://img.shields.io/badge/Paper-ECCV%202026-b31b1b)](https://static.siplab.org/papers/eccv2026-skillspotter.pdf)
 [![arXiv](https://img.shields.io/badge/arXiv-2606.31127-b31b1b?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2606.31127)
 
 </div>
