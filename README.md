@@ -42,15 +42,13 @@ settings and activities.
 git clone https://github.com/eth-siplab/SkillSpotter.git
 cd SkillSpotter
 
-conda create -n skillspotter python=3.9
+conda env create -f environment.yml
 conda activate skillspotter
-pip install -r requirements.txt
+cd libs/utils && pip install -e . && cd ../..
 ```
 
 The core training/evaluation pipeline runs on pre-extracted [Omnivore](https://github.com/facebookresearch/omnivore)
-features and does not require any compiled extensions. The optional dependencies in
-`requirements.txt` (pose prediction, raw-video clip extraction, text evaluation) can be installed
-on demand.
+features and does not require any compiled extensions. 
 
 ## Data Preparation
 
