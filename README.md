@@ -207,11 +207,13 @@ eval.py     evaluation entry point
 If you find this work useful, please cite:
 
 ```bibtex
-@article{braun2026skillspotter,
-  title   = {SkillSpotter: Pose-Aware Multi-View Skilled Action Detection and Grading in Ego-Exo Videos},
-  author  = {Braun, Bj{\"o}rn and Holz, Christian},
-  journal = {arXiv preprint arXiv:2606.31127},
-  year    = {2026}
+@inproceedings{braun2026skillspotter,
+  title={SkillSpotter: Pose-Aware Multi-View Skilled Action Detection and Grading in Ego-Exo Videos},
+  author={Braun, Bj{\"o}rn and Holz, Christian},
+  booktitle={European Conference on Computer Vision},
+  pages={600--618},
+  year={2026},
+  organization={Springer}
 }
 ```
 
